@@ -27,7 +27,7 @@ def get_msgs(request: Request) -> list[Msg]:
         ]
 
 @app.post("/msgs/")
-@limiter.limit("5/hour")
+@limiter.limit("10/day")
 def create_msg(request: Request, msg: Msg) -> None:
     with Postgres() as pg:
         pg.do("""INSERT INTO msgs (author, title, content) VALUES (%s, %s, %s)""", (msg.author, msg.title, msg.content))
