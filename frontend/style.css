@@ -13,9 +13,9 @@
     box-sizing: border-box;
 }
 
-                           html {font-size: 10px;}
-@media (min-width: 500px) {html {font-size: 12px;} }
-@media (min-width: 800px) {html {font-size: 14px;} }
+html { font-size: 30px; }
+@media (min-width: 40em)  { html { font-size: 24px; } }
+@media (min-width: 50em)  { html { font-size: 18px; } }
 
 
 body {
@@ -143,7 +143,7 @@ p {
     to { transform: rotate(360deg); }
 }
 
-#msgList {
+/* #msgList {
     max-height: 350px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -167,7 +167,7 @@ p {
 
 #msgList::-webkit-scrollbar-thumb:hover {
     background: #484f58;
-}
+} */
 
 .msg {
     padding: 16px;
