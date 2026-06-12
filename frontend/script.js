@@ -12,7 +12,7 @@ const API = "https://gift-windbell-uno.onrender.com"
 
 async function getMsgs() {
     const res = await fetch(`${API}/msgs/`);
-    return res.json();
+    return res;
 }
 
 async function createMsg(author, title, content) {
@@ -34,10 +34,20 @@ const msgList = document.getElementById('msgList');
 
 // 2. 定义显示消息列表函数
 async function showMsgs() {
-    const msgs = await getMsgs();
+    try {
+        const res = await getMsgs();
+    } catch (error) {
+        msgList.innerHTML = '<div class="error-message">❌️获取消息失败</div>';
+        return;
+    }
     let html = '';
-    for (const msg of msgs) {
-        html += `<li class="msg">${sanitize(msg.author)}: ${sanitize(msg.title)} ${sanitize(msg.content)}</li>`;
+    for (const msg of res.json()) {
+        html += `<li class="msg">
+            <p class="author">${sanitize(msg.author)}</p>
+            <p class="title">${sanitize(msg.title)}</p>
+            <p class="content">${sanitize(msg.content)}</p>
+            <p class="time">${sanitize(msg.created_at)}</p>
+            </li>`;
     }
     msgList.innerHTML = html;
 }
