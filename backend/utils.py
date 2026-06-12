@@ -37,12 +37,12 @@ class Postgres:
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_type is None:
+        if exc_type is not None:
             self.conn.rollback()
             self.cur.close()
             self.conn.close()
             print(f"Database error: {exc_type} {exc_val} {exc_tb}")
-            raise HTTPException(status_code=500, detail="Internal server error") 
+            raise HTTPException(status_code=500, detail="Internal server error")
         self.conn.commit()
         self.cur.close()
         self.conn.close()
