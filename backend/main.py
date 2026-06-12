@@ -2,13 +2,14 @@ from backend.utils import *
 
 app = FastAPI()
 
-# 允许前端调用（Vercel 域名或本地）
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],   # 开发阶段用 *，上线后换成你的前端域名
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+# 允许前端调用（通过环境变量控制，本地 .env 为空则允许所有来源）
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").strip()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"] if ALLOWED_ORIGINS == "*" else ALLOWED_ORIGINS.split(","),
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def root():

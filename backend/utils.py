@@ -1,11 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
-import os
 import datetime
+import os
+from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Optional, Literal, Never
-from dotenv import load_dotenv
 
 load_dotenv()
 
