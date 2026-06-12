@@ -1,4 +1,11 @@
 
+// ========== 工具 ==========
+
+function sanitize(dirty) {
+    return DOMPurify.sanitize(dirty, { ALLOWED_TAGS: ['b', 'i', 'u', 'p'] });
+}
+
+
 // ========== 后端API ==========
 
 const API = "https://gift-windbell-uno.onrender.com"
@@ -30,7 +37,7 @@ async function showMsgs() {
     const msgs = await getMsgs();
     let html = '';
     for (const msg of msgs) {
-        html += `<li id="msg">${msg.author}: ${msg.title}</li>`;
+        html += `<li class="msg">${sanitize(msg.author)}: ${sanitize(msg.title)} ${sanitize(msg.content)}</li>`;
     }
     msgList.innerHTML = html;
 }

@@ -1,20 +1,22 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+import slowapi, slowapi.util
 import psycopg2
 import datetime
 import os
-from dotenv import load_dotenv
-from pydantic import BaseModel
+import dotenv
+from pydantic import BaseModel, Field
 from typing import Optional, Literal, Never
 
-load_dotenv()
+
+dotenv.load_dotenv()
 
 
 class Msg(BaseModel):
     id: Optional[int] = None
-    author: str
-    title: str
-    content: str
+    author: str = Field(max_length=20)
+    title: str = Field(max_length=50)
+    content: str = Field(max_length=250)
     created_at: datetime.datetime = datetime.datetime.now()
 
 
@@ -35,12 +37,16 @@ class Postgres:
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.conn.rollback()
+            self.cur.close()
+            self.conn.close()
+            print(f"Database error: {exc_type} {exc_val} {exc_tb}")
+            raise HTTPException(status_code=500, detail="Internal server error") 
         self.conn.commit()
         self.cur.close()
         self.conn.close()
-        if exc_type is None:
-            return False
-        raise HTTPException(status_code=500, detail=f"Database error: {exc_type} {exc_val} {exc_tb}") 
+        return False
 
 
 if __name__ == "__main__":
