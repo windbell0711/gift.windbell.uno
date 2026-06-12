@@ -1,4 +1,4 @@
-from utils import *
+from backend.utils import *
 
 app = FastAPI()
 
