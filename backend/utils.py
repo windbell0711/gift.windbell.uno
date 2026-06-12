@@ -17,7 +17,7 @@ class Msg(BaseModel):
     author: str = Field(max_length=20)
     title: str = Field(max_length=50)
     content: str = Field(max_length=250)
-    created_at: datetime.datetime = datetime.datetime.now()
+    created_at: datetime.datetime = datetime.datetime.utcnow()
 
 
 class Postgres:
