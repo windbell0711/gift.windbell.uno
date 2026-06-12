@@ -29,7 +29,7 @@ async function createMsg(author, title, content) {
         },
         body: JSON.stringify({author, title, content}),  // 字面量简写
     });
-    return res.ok;
+    return res;
 }
 
 
@@ -84,17 +84,22 @@ async function handleSubmit() {
         alert('请填写完整信息');
         return;
     }
+    if (author.length > 20 && title.length > 50 && content.length > 250) {
+        alert('作者、标题和内容分别不能超过20、50和250个字符');
+        return;
+    }
     
-    const success = await createMsg(author, title, content);
+    const res = await createMsg(author, title, content);
 
-    if (success)  {
+    if (res.ok)  {
         alert('提交成功');
         showMsgs();
         titleInput.value = '';
         contentTextarea.value = '';
         titleInput.focus();
     } else {
-        alert('提交失败');
+        alert(`提交失败 ${res.status}`);
+        console.error(res);
     }
 }
 

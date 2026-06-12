@@ -23,7 +23,7 @@ def get_msgs(request: Request) -> list[Msg]:
     with Postgres() as pg:
         return [
             Msg(id=r[0], author=r[1], title=r[2], content=r[3], created_at=r[4].isoformat() + 'Z')
-            for r in pg.get("SELECT * FROM msgs")
+            for r in pg.get("SELECT * FROM msgs ORDER BY created_at DESC LIMIT 20")
         ]
 
 @app.post("/msgs/")
